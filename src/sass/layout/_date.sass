@@ -1,0 +1,60 @@
+#datesidebar
+	float: right
+	width: 300px
+	height: 100vh
+	background: $init-bg
+	.dateboard-wrap
+		width: $width
+		height: 60vh
+		.week-row
+			width: $width
+			height: 10vh
+			display: flex
+			color: white
+			background: darken($init-bg, 10%)
+			.week
+				margin: auto
+				font-size: 1.8rem
+		.date-row
+			width: $width
+			height: 38vh
+			color: white
+			>span
+				@extend %word-align
+				flex-direction: column
+			.month
+				height: 12vh
+				font-size: 2.8rem
+			.day
+				height: 15vh
+				font-size: 10rem
+			.year
+				height: 11vh
+				font-size: 2.5rem
+		.todoinfo-row
+			@extend %word-align
+			width: $width
+			height: 12vh
+			border: 1px solid darken($init-bg, 4%)
+			color: darken($init-bg, 10%)
+			font-size: 1.4rem
+			>span
+				display: inline-block
+				margin-left: 4px
+				color: white
+	.datepicker-wrap
+		width: $width
+		height: 40vh
+		background: $init-bg-dark
+
+
+
+
+	
+
+		
+
+
+
+
+

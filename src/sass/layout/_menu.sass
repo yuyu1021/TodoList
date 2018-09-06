@@ -1,0 +1,60 @@
+#menusidebar
+	float: left
+	width: 250px
+	height: 100vh
+	background: $nav-bg
+	.profile
+		width: $width
+		height: 250px
+		background: $init-bg
+		box-sizing: border-box
+		padding-top: 35px
+		.profile-img
+			width: 150px
+			height: 150px
+			margin: auto
+			background: $init-bg-dark
+			border-radius: 100%
+			overflow: hidden
+			.img
+				width: $width
+		.profile-name
+			font-size: 2rem
+			color: darken($init-bg-dark, 10%)
+			margin-top: 10px
+			text-align: center
+	.menu-wrap
+		width: $width
+		.menu-list
+			width: $width
+			.link
+				display: flex
+				align-items: center
+				padding: 20px
+				box-sizing: border-box
+				transition: 0.2s
+				&.active, &:link, &:hover
+					color: #8999a9
+					transition: 0.2s
+				&:hover
+					background: #42566b
+					&:active, &:link, &:hover
+						color: #a4b5c3
+				&.active
+					background: $nav-active
+					.link
+						&:active, &:link, &:hover
+							color: #cdd6df
+				.material-icons
+					font-size: 2.6rem
+					margin-right: 20px
+				.menu-name
+					font-size: 1.5rem
+			
+
+
+
+
+
+
+
