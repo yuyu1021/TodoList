@@ -58,13 +58,10 @@
 </template>
 
 <script>
-import Todo from '@content/Todo'
+import { mapState, mapActions } from 'vuex'
 
 export default {
-  name: 'Todo',
-  components: {
-    Todo
-  },
+  name: 'TodoList',
   data () {
     return {
       projects: [
@@ -72,12 +69,6 @@ export default {
         {id: 2, 'name': 'Game'},
         {id: 3, 'name': 'Shopping'},
         {id: 4, 'name': 'Sport'}
-      ],
-      todos: [
-        {id: 1, 'text': 'Eat something', 'project': 'Food', 'done': false},
-        {id: 2, 'text': 'Play something', 'project': 'Game', 'done': false},
-        {id: 3, 'text': 'Buy something', 'project': 'Shopping', 'done': true},
-        {id: 4, 'text': 'Buy something2', 'project': 'Shopping', 'done': false}
       ],
       nextId: 5,
       nextProjectId: 5,
@@ -89,6 +80,9 @@ export default {
     }
   },
   computed: {
+    ...mapState('todos', {
+      todos: state => state.todoItems
+    }),
     todosArr: function () {
       if (!this.filterStatus) {
         return this.todos
@@ -103,6 +97,9 @@ export default {
     }
   },
   methods: {
+    ...mapActions({
+      fetchTodos: 'todos/fetchTodos'
+    }),
     findProjects: function (project) {
       if (this.$route.params.projectname) {
         return this.$route.params.projectname === project.name
@@ -150,6 +147,9 @@ export default {
     },
     search: function () {
     }
+  },
+  created () {
+    this.fetchTodos()
   }
 }
 </script>

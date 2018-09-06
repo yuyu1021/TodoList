@@ -17,7 +17,8 @@
 </template>
 
 <script>
-import Alert from '@module/Alert'
+import { mapState, mapActions } from 'vuex'
+import Alert from '@modules/Alert'
 
 export default {
   name: 'ProjectList',
@@ -26,23 +27,26 @@ export default {
   },
   data () {
     return {
-      projects: [
-        {id: 1, 'name': 'Food'},
-        {id: 2, 'name': 'Game'},
-        {id: 3, 'name': 'Shopping'},
-        {id: 4, 'name': 'Sport'}
-      ],
       projectAlert: false,
       deleteProject: ''
     }
   },
   computed: {
+    ...mapState('projects', {
+      projects: state => state.projectItems
+    })
   },
   methods: {
+    ...mapActions({
+      fetchProjects: 'projects/fetchProjects'
+    }),
     showAlert (project) {
       this.projectAlert = true
       this.deleteProject = project
     }
+  },
+  created () {
+    this.fetchProjects()
   }
 }
 </script>
