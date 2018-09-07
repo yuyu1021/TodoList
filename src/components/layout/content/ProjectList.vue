@@ -17,7 +17,6 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
 import Alert from '@modules/Alert'
 
 export default {
@@ -32,15 +31,15 @@ export default {
     }
   },
   computed: {
-    ...mapState('projects', {
-      projects: state => state.projectItems
-    })
+    projects: function () {
+      return this.$store.state.projects.projectItems
+    }
   },
   methods: {
-    ...mapActions({
-      fetchProjects: 'projects/fetchProjects'
-    }),
-    showAlert (project) {
+    fetchProjects: function () {
+      this.$store.dispatch('fetchProjects')
+    },
+    showAlert: function (project) {
       this.projectAlert = true
       this.deleteProject = project
     }

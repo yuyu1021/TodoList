@@ -3,7 +3,7 @@
     <div class="btn-bar add">
       <i class="material-icons" :class="{ active: isActive }" @click="showAddForm()">add</i>
       <div class="add-alert" :class="{ active: isActive }">
-        <form @submit.prevent="(newProject !== '' || projectSelected !== '') && newItem !== '' ? addItem() : ''">
+        <form @submit.prevent="(newProject !== '' || projectSelected !== '') && newText !== '' ? addItem() : ''">
           <div class="add-row" v-if="!$route.params.projectname">
             <span class="title">New Project</span>
             <input type="text" class="input" v-model="newProject" :disabled="projectSelected !== ''">
@@ -21,7 +21,7 @@
           </div>
           <div class="add-row">
             <span class="title">Todo Title</span>
-            <input type="text" class="input" v-model="newItem" @keyup.enter="submit">
+            <input type="text" class="input" v-model="newText" @keyup.enter="submit">
           </div>
           <button type="submit" class="btn blue-border">Add</button>
         </form>
@@ -58,21 +58,11 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
-
 export default {
   name: 'TodoList',
   data () {
     return {
-      projects: [
-        {id: 1, 'name': 'Food'},
-        {id: 2, 'name': 'Game'},
-        {id: 3, 'name': 'Shopping'},
-        {id: 4, 'name': 'Sport'}
-      ],
-      nextId: 5,
-      nextProjectId: 5,
-      newItem: '',
+      newText: '',
       newProject: '',
       projectSelected: '',
       isActive: false,
@@ -80,26 +70,24 @@ export default {
     }
   },
   computed: {
-    ...mapState('todos', {
-      todos: state => state.todoItems
-    }),
+    todos: function () {
+      return this.$store.state.todos.todoItems
+    },
+    projects: function () {
+      return this.$store.state.projects.projectItems
+    },
     todosArr: function () {
       if (!this.filterStatus) {
         return this.todos
       } else {
-        var sortArr = []
-        var doneArr = this.todos.filter(function (todo) { return todo.done })
-        var undoneArr = this.todos.filter(function (todo) { return !todo.done })
-
-        sortArr = [...undoneArr, ...doneArr]
-        return sortArr
+        return this.$store.getters.sortTodos
       }
     }
   },
   methods: {
-    ...mapActions({
-      fetchTodos: 'todos/fetchTodos'
-    }),
+    fetchProjects: function () {
+      this.$store.dispatch('fetchProjects')
+    },
     findProjects: function (project) {
       if (this.$route.params.projectname) {
         return this.$route.params.projectname === project.name
@@ -119,37 +107,24 @@ export default {
       }
     },
     addItem: function () {
-      if (this.projectSelected !== '') {
-        const project = this.projects.find(project => project.id === this.projectSelected)
-        this.todos.push({
-          id: this.nextId, text: this.newItem, project: project.name, done: false
-        })
-      } else if (this.newProject !== '') {
-        this.todos.push({
-          id: this.nextId, text: this.newItem, project: this.newProject, done: false
-        })
-        this.projects.push({
-          id: this.nextProjectId, name: this.newProject
-        })
-        this.nextProjectId++
+      this.$store.dispatch('addTodoItem', [ this.newText, this.projectSelected, this.newProject ]).then(() => {
         this.newProject = ''
-      }
-      this.nextId++
-      this.newItem = ''
+        this.newText = ''
+        this.projectSelected = ''
+      })
     },
     deleteItem: function (todo) {
-      var delItem = this.todos.indexOf(todo)
-      this.todos.splice(delItem, 1)
+      this.$store.commit('deleteTodoItem', todo)
     },
     toggleStatus: function (todo) {
-      todo.done = !todo.done
+      this.$store.commit('toggleTodo', todo)
       this.filterStatus = true
     },
     search: function () {
     }
   },
   created () {
-    this.fetchTodos()
+    this.fetchProjects()
   }
 }
 </script>

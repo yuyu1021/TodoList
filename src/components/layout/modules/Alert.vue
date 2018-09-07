@@ -20,18 +20,6 @@ export default {
   props: ['projectItem'],
   data () {
     return {
-      projects: [
-        {id: 1, 'name': 'Food'},
-        {id: 2, 'name': 'Game'},
-        {id: 3, 'name': 'Shopping'},
-        {id: 4, 'name': 'Sport'}
-      ],
-      todos: [
-        {id: 1, 'text': 'Eat something', 'project': 'Food', 'done': false},
-        {id: 2, 'text': 'Play something', 'project': 'Game', 'done': false},
-        {id: 3, 'text': 'Buy something', 'project': 'Shopping', 'done': true},
-        {id: 4, 'text': 'Buy something2', 'project': 'Shopping', 'done': false}
-      ],
       project: this.projectItem
     }
   },
@@ -39,14 +27,7 @@ export default {
   },
   methods: {
     deleteProject: function (project) {
-      const projectLocate = this.projects.indexOf(project)
-      this.projects.splice(projectLocate, 1)
-      const _this = this
-      this.todos.map(function (todo, index) {
-        if (todo.project === project.name) {
-          _this.todos.splice(index, 1)
-        }
-      })
+      this.$store.dispatch('deleteProject', project)
       this.$emit('alertStatus')
     }
   }

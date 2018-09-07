@@ -24,18 +24,18 @@ export default {
   name: 'DateSidebar',
   data () {
     return {
-      newDate: new Date(),
-      todos: [
-        {id: 1, 'text': 'Eat something', 'done': false},
-        {id: 2, 'text': 'Play something', 'done': false},
-        {id: 3, 'text': 'Buy something', 'done': true}
-      ]
+      newDate: new Date()
     }
   },
   computed: {
-
+    todos: function () {
+      return this.$store.state.todos.todoItems
+    }
   },
   methods: {
+    fetchTodos: function () {
+      this.$store.dispatch('fetchTodos')
+    },
     getYear: function () {
       return this.newDate.getFullYear()
     },
@@ -54,8 +54,11 @@ export default {
       return this.todos.length
     },
     getDone: function () {
-      return this.todos.filter(function (item) { return item.done }).length
+      return this.$store.getters.getDoneLeng
     }
+  },
+  created () {
+    this.fetchTodos()
   }
 }
 </script>
