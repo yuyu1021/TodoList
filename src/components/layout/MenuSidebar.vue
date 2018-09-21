@@ -24,17 +24,20 @@ export default {
   name: 'MenuSidebar',
   data () {
     return {
-      allmenu: [
-        {id: 1, name: 'Home', icon: 'home', link: '/'},
-        {id: 2, name: 'Projects', icon: 'folder', link: '/projects'},
-        {id: 3, name: 'Members', icon: 'group', link: '/members'},
-        {id: 4, name: 'Settings', icon: 'settings', link: '/settings'}
-      ]
+    }
+  },
+  computed: {
+    allmenu: function () {
+      return this.$store.state.sidebar.allmenu
     }
   },
   methods: {
+    fetchMenu: function () {
+      this.$store.dispatch('fetchMenu')
+    }
   },
-  computed: {
+  created () {
+    this.fetchMenu()
   }
 }
 </script>
